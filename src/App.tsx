@@ -84,9 +84,9 @@ const PublicRoute = ({ children }) => {
   return children;
 };
 
-// Home Route Component (shows fake data for non-authenticated users, redirects authenticated users)
+// Home Route Component (shows LinkedIn-style job feed for everyone)
 const HomeRoute = () => {
-  const { isAuthenticated, user, loading } = useAuth();
+  const { loading } = useAuth();
   
   if (loading) {
     return (
@@ -99,16 +99,7 @@ const HomeRoute = () => {
     );
   }
   
-  if (isAuthenticated) {
-    // Redirect to appropriate dashboard based on role
-    if (user?.role === 'organization') {
-      return <Navigate to="/organization-dashboard" replace />;
-    } else if (user?.role === 'employee') {
-      return <Navigate to="/employee-dashboard" replace />;
-    }
-  }
-  
-  // Show LinkedIn-style home for non-authenticated users
+  // Show LinkedIn-style home for everyone (authenticated and non-authenticated)
   return <LinkedInHome />;
 };
 
