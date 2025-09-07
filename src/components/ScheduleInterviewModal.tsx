@@ -77,10 +77,10 @@ const ScheduleInterviewModal: React.FC<ScheduleInterviewModalProps> = ({
 
       console.log('📤 Sending interview data:', interviewInfo);
 
-      // Update application status to 'interview' and add interview details
+      // Update application status to 'interview-scheduled' and add interview details
       const result = await apiService.updateApplicationStatus(
         application._id, 
-        'interview', 
+        'interview-scheduled', 
         `Interview scheduled for ${interviewData.date} at ${interviewData.time}. ${interviewData.notes}`,
         interviewInfo.interviewData
       );

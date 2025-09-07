@@ -82,7 +82,7 @@ const EmployeeInterviews: React.FC = () => {
         
         // Filter applications that have interview status
         const interviewApplications = applications.filter((app: any) => {
-          const hasInterviewStatus = app.status === 'interview';
+          const hasInterviewStatus = app.status === 'interview-scheduled' || app.status === 'interview';
           const hasInterviewData = !!app.interviewData;
           console.log(`🎯 App ${app._id}: status=${app.status}, hasData=${hasInterviewData}, matches=${hasInterviewStatus && hasInterviewData}`);
           return hasInterviewStatus && hasInterviewData;
