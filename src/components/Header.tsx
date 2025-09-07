@@ -47,7 +47,7 @@ const Header = () => {
           {/* Navigation - Desktop */}
           <nav className="hidden md:flex items-center space-x-8">
             <button 
-              onClick={() => navigate('/')}
+              onClick={() => navigate(isAuthenticated ? '/home' : '/')}
               className="text-foreground hover:text-primary font-medium transition-colors"
             >
               Home

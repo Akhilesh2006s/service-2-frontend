@@ -86,9 +86,9 @@ const PublicRoute = ({ children }) => {
   return children;
 };
 
-// Home Route Component (shows LinkedIn-style job feed for everyone)
-const HomeRoute = () => {
-  const { loading } = useAuth();
+// Index Route Component (shows Airbnb-style grid for non-authenticated users)
+const IndexRoute = () => {
+  const { isAuthenticated, loading } = useAuth();
   
   if (loading) {
     return (
@@ -101,8 +101,37 @@ const HomeRoute = () => {
     );
   }
   
-  // Show new Airbnb-style home for everyone (authenticated and non-authenticated)
+  if (isAuthenticated) {
+    // Redirect authenticated users to LinkedIn-style home
+    return <Navigate to="/home" replace />;
+  }
+  
+  // Show Airbnb-style grid for non-authenticated users
   return <NewHome />;
+};
+
+// Home Route Component (shows LinkedIn-style feed for authenticated users)
+const HomeRoute = () => {
+  const { isAuthenticated, loading } = useAuth();
+  
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  if (!isAuthenticated) {
+    // Redirect non-authenticated users to index page
+    return <Navigate to="/" replace />;
+  }
+  
+  // Show LinkedIn-style feed for authenticated users
+  return <LinkedInHome />;
 };
 
 const App = () => (
@@ -113,7 +142,8 @@ const App = () => (
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<HomeRoute />} />
+            <Route path="/" element={<IndexRoute />} />
+            <Route path="/home" element={<HomeRoute />} />
             <Route path="/landing" element={<Index />} />
             <Route 
               path="/login" 

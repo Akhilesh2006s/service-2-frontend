@@ -151,10 +151,10 @@ const NewHome: React.FC = () => {
               {isAuthenticated ? (
                 <Button 
                   variant="ghost" 
-                  onClick={() => navigate(user?.role === 'organization' ? '/organization-dashboard' : '/employee-dashboard')}
+                  onClick={() => navigate('/home')}
                   className="text-gray-700 hover:text-blue-600"
                 >
-                  Dashboard
+                  Home
                 </Button>
               ) : (
                 <Button 
@@ -186,7 +186,7 @@ const NewHome: React.FC = () => {
                   <Button 
                     variant="ghost" 
                     size="sm"
-                    onClick={() => navigate(user?.role === 'organization' ? '/organization-dashboard' : '/employee-dashboard')}
+                    onClick={() => navigate('/home')}
                   >
                     👤
                   </Button>
