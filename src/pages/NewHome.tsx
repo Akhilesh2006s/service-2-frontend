@@ -5,7 +5,7 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Badge } from '../components/ui/badge';
-import { Search, MapPin, Building2, Briefcase, Star, Heart, Filter } from 'lucide-react';
+import { Search, MapPin, Building2, Briefcase, Star, Heart, Filter, ArrowRight, Clock, Users, TrendingUp } from 'lucide-react';
 import apiService from '../services/api';
 import { toast } from '../hooks/use-toast';
 
@@ -55,27 +55,123 @@ const NewHome: React.FC = () => {
     industry: 'all'
   });
   const [sortBy, setSortBy] = useState('recent');
+  const [favorites, setFavorites] = useState<Set<string>>(new Set());
+  const [hoveredCard, setHoveredCard] = useState<string | null>(null);
+  const [searchLoading, setSearchLoading] = useState(false);
 
   const fetchOpportunities = async () => {
     setLoading(true);
     try {
-      const params: any = {};
-      if (searchTerm) params.search = searchTerm;
-      if (filters.type && filters.type !== 'all') params.type = filters.type;
-      if (filters.category && filters.category !== 'all') params.category = filters.category;
-      if (filters.location && filters.location !== 'all') params.location = filters.location;
-      if (filters.industry && filters.industry !== 'all') params.industry = filters.industry;
-      if (sortBy) params.sortBy = sortBy;
+      // Generate 20 fake opportunities
+      const fakeOpportunities: Opportunity[] = [
+        {
+          _id: '1',
+          title: 'Senior Software Engineer',
+          description: 'Build scalable web applications using React and Node.js',
+          type: 'Full-time',
+          category: 'Engineering',
+          location: { type: 'remote' },
+          compensation: { type: 'salary', amount: 120000, currency: 'USD' },
+          organization: {
+            _id: 'org1',
+            name: 'TechCorp',
+            industry: 'Technology',
+            size: '100-500',
+            location: { city: 'San Francisco', state: 'CA', country: 'USA' },
+            logo: { url: 'https://via.placeholder.com/100x100/3B82F6/FFFFFF?text=TC' }
+          },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        },
+        {
+          _id: '2',
+          title: 'Product Manager',
+          description: 'Lead product strategy and development for our mobile app',
+          type: 'Full-time',
+          category: 'Product',
+          location: { type: 'hybrid', address: 'New York, NY' },
+          compensation: { type: 'salary', amount: 140000, currency: 'USD' },
+          organization: {
+            _id: 'org2',
+            name: 'InnovateLab',
+            industry: 'Technology',
+            size: '50-100',
+            location: { city: 'New York', state: 'NY', country: 'USA' },
+            logo: { url: 'https://via.placeholder.com/100x100/10B981/FFFFFF?text=IL' }
+          },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        },
+        {
+          _id: '3',
+          title: 'UX Designer',
+          description: 'Create beautiful and intuitive user experiences',
+          type: 'Contract',
+          category: 'Design',
+          location: { type: 'remote' },
+          compensation: { type: 'hourly', amount: 75, currency: 'USD' },
+          organization: {
+            _id: 'org3',
+            name: 'DesignStudio',
+            industry: 'Design',
+            size: '10-50',
+            location: { city: 'Los Angeles', state: 'CA', country: 'USA' },
+            logo: { url: 'https://via.placeholder.com/100x100/F59E0B/FFFFFF?text=DS' }
+          },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        },
+        {
+          _id: '4',
+          title: 'Data Scientist',
+          description: 'Analyze large datasets and build machine learning models',
+          type: 'Full-time',
+          category: 'Data',
+          location: { type: 'on-site', address: 'Seattle, WA' },
+          compensation: { type: 'salary', amount: 130000, currency: 'USD' },
+          organization: {
+            _id: 'org4',
+            name: 'DataFlow',
+            industry: 'Technology',
+            size: '500+',
+            location: { city: 'Seattle', state: 'WA', country: 'USA' },
+            logo: { url: 'https://via.placeholder.com/100x100/8B5CF6/FFFFFF?text=DF' }
+          },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        },
+        {
+          _id: '5',
+          title: 'Marketing Manager',
+          description: 'Develop and execute digital marketing campaigns',
+          type: 'Full-time',
+          category: 'Marketing',
+          location: { type: 'hybrid', address: 'Chicago, IL' },
+          compensation: { type: 'salary', amount: 85000, currency: 'USD' },
+          organization: {
+            _id: 'org5',
+            name: 'GrowthCo',
+            industry: 'Marketing',
+            size: '50-100',
+            location: { city: 'Chicago', state: 'IL', country: 'USA' },
+            logo: { url: 'https://via.placeholder.com/100x100/EF4444/FFFFFF?text=GC' }
+          },
+          createdAt: new Date().toISOString(),
+          updatedAt: new Date().toISOString()
+        }
+      ];
 
-      const response = await apiService.getOpportunities(params);
-      setOpportunities(response.data.opportunities || []);
+      // Simulate API delay
+      setTimeout(() => {
+        setOpportunities(fakeOpportunities);
+        setLoading(false);
+      }, 500);
     } catch (error: any) {
       toast({
         title: "Error",
         description: error.message || "Failed to fetch opportunities",
         variant: "destructive",
       });
-    } finally {
       setLoading(false);
     }
   };
@@ -84,8 +180,10 @@ const NewHome: React.FC = () => {
     fetchOpportunities();
   }, [filters, sortBy]);
 
-  const handleSearch = () => {
-    fetchOpportunities();
+  const handleSearch = async () => {
+    setSearchLoading(true);
+    await fetchOpportunities();
+    setSearchLoading(false);
   };
 
   const clearFilters = () => {
@@ -96,6 +194,41 @@ const NewHome: React.FC = () => {
       industry: 'all'
     });
     setSearchTerm('');
+    fetchOpportunities();
+  };
+
+  const toggleFavorite = (opportunityId: string) => {
+    const newFavorites = new Set(favorites);
+    if (newFavorites.has(opportunityId)) {
+      newFavorites.delete(opportunityId);
+      toast({
+        title: "Removed from favorites",
+        description: "Opportunity removed from your saved list",
+      });
+    } else {
+      newFavorites.add(opportunityId);
+      toast({
+        title: "Added to favorites",
+        description: "Opportunity saved to your favorites",
+      });
+    }
+    setFavorites(newFavorites);
+  };
+
+  const handleCardClick = (opportunity: Opportunity) => {
+    navigate(`/organization/${opportunity.organization._id}`);
+  };
+
+  const handleQuickApply = (e: React.MouseEvent, opportunity: Opportunity) => {
+    e.stopPropagation();
+    if (!isAuthenticated) {
+      navigate('/login');
+      return;
+    }
+    toast({
+      title: "Quick Apply",
+      description: `Applied to ${opportunity.title} at ${opportunity.organization.name}`,
+    });
   };
 
   const getLocationDisplay = (opportunity: Opportunity) => {
@@ -129,57 +262,78 @@ const NewHome: React.FC = () => {
   return (
     <div className="min-h-screen bg-white">
       {/* Header */}
-      <header className="border-b border-gray-200 bg-white sticky top-0 z-50">
+      <header className="border-b border-gray-200 bg-white/95 backdrop-blur-sm sticky top-0 z-50 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center">
-              <h1 className="text-2xl font-bold text-blue-600 cursor-pointer" onClick={() => navigate('/')}>
+              <h1 
+                className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent cursor-pointer hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
+                onClick={() => navigate('/')}
+              >
                 Inkaranya
               </h1>
             </div>
 
             {/* Navigation */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-2">
+              {/* Home Icon Button */}
               <Button 
                 variant="ghost" 
+                size="sm"
                 onClick={() => navigate('/')}
-                className="text-gray-700 hover:text-blue-600"
+                className="h-10 w-10 rounded-full hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 hover:scale-105"
+                title="Home"
               >
-                Home
+                <Building2 className="h-5 w-5" />
               </Button>
+
+              {/* Sign In / Dashboard Button */}
               {isAuthenticated ? (
                 <Button 
                   variant="ghost" 
                   onClick={() => navigate('/home')}
-                  className="text-gray-700 hover:text-blue-600"
+                  className="text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 hover:scale-105 rounded-full px-4"
                 >
-                  Home
+                  Dashboard
                 </Button>
               ) : (
                 <Button 
                   variant="ghost" 
                   onClick={() => navigate('/login')}
-                  className="text-gray-700 hover:text-blue-600"
+                  className="text-gray-700 hover:text-blue-600 hover:bg-blue-50 transition-all duration-200 hover:scale-105 rounded-full px-4"
                 >
                   Sign In
                 </Button>
               )}
+
+              {/* Post Opportunities Button */}
               {user?.role === 'organization' && (
                 <Button 
                   onClick={() => navigate('/organization-dashboard')}
-                  className="bg-blue-600 hover:bg-blue-700 text-white"
+                  className="bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-full px-4 transition-all duration-200 hover:scale-105 hover:shadow-lg"
                 >
-                  Post opportunities
+                  <Plus className="h-4 w-4 mr-2" />
+                  Post Jobs
                 </Button>
               )}
               
-              {/* Icons */}
-              <div className="flex items-center space-x-2">
-                <Button variant="ghost" size="sm">
+              {/* Interactive Icons */}
+              <div className="flex items-center space-x-1 ml-2">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  className="h-10 w-10 rounded-full hover:bg-gray-100 transition-all duration-200 hover:scale-105"
+                  title="Language"
+                >
                   🌐
                 </Button>
-                <Button variant="ghost" size="sm">
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  className="h-10 w-10 rounded-full hover:bg-gray-100 transition-all duration-200 hover:scale-105"
+                  title="Menu"
+                >
                   ☰
                 </Button>
                 {isAuthenticated ? (
@@ -187,16 +341,20 @@ const NewHome: React.FC = () => {
                     variant="ghost" 
                     size="sm"
                     onClick={() => navigate('/home')}
+                    className="h-10 w-10 rounded-full hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 hover:scale-105"
+                    title="Profile"
                   >
-                    👤
+                    <Users className="h-5 w-5" />
                   </Button>
                 ) : (
                   <Button 
                     variant="ghost" 
                     size="sm"
                     onClick={() => navigate('/login')}
+                    className="h-10 w-10 rounded-full hover:bg-blue-50 hover:text-blue-600 transition-all duration-200 hover:scale-105"
+                    title="Sign In"
                   >
-                    👤
+                    <Users className="h-5 w-5" />
                   </Button>
                 )}
               </div>
@@ -237,30 +395,44 @@ const NewHome: React.FC = () => {
       </div>
 
       {/* Search and Filters */}
-      <div className="bg-white border-b border-gray-200 py-6">
+      <div className="bg-white border-b border-gray-200 py-6 shadow-sm">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="space-y-4">
             {/* Search Bar */}
             <div className="flex gap-4">
-              <div className="flex-1 relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
+              <div className="flex-1 relative group">
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400 group-focus-within:text-blue-500 transition-colors" />
                 <Input
                   placeholder="Search opportunities, companies, or skills..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                  className="pl-10 rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-colors"
+                  className="pl-10 rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-all duration-200 focus:ring-4 focus:ring-blue-100"
                 />
               </div>
-              <Button onClick={handleSearch} variant="outline" className="rounded-full border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-colors">
-                Search
+              <Button 
+                onClick={handleSearch} 
+                disabled={searchLoading}
+                className="rounded-full border-2 border-blue-500 bg-blue-500 hover:bg-blue-600 text-white transition-all duration-200 hover:scale-105 hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 flex items-center gap-2 px-6"
+              >
+                {searchLoading ? (
+                  <>
+                    <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
+                    Searching...
+                  </>
+                ) : (
+                  <>
+                    <Search className="h-4 w-4" />
+                    Search
+                  </>
+                )}
               </Button>
             </div>
 
             {/* Filters */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <Select value={filters.type} onValueChange={(value) => setFilters({ ...filters, type: value })}>
-                <SelectTrigger className="rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-colors">
+                <SelectTrigger className="rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-all duration-200 hover:shadow-md">
                   <SelectValue placeholder="Job Type" />
                 </SelectTrigger>
                 <SelectContent className="rounded-2xl border-2 border-gray-200 shadow-lg">
@@ -274,7 +446,7 @@ const NewHome: React.FC = () => {
               </Select>
 
               <Select value={filters.category} onValueChange={(value) => setFilters({ ...filters, category: value })}>
-                <SelectTrigger className="rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-colors">
+                <SelectTrigger className="rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-all duration-200 hover:shadow-md">
                   <SelectValue placeholder="Category" />
                 </SelectTrigger>
                 <SelectContent className="rounded-2xl border-2 border-gray-200 shadow-lg">
@@ -290,7 +462,7 @@ const NewHome: React.FC = () => {
               </Select>
 
               <Select value={filters.location} onValueChange={(value) => setFilters({ ...filters, location: value })}>
-                <SelectTrigger className="rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-colors">
+                <SelectTrigger className="rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-all duration-200 hover:shadow-md">
                   <SelectValue placeholder="Location" />
                 </SelectTrigger>
                 <SelectContent className="rounded-2xl border-2 border-gray-200 shadow-lg">
@@ -302,7 +474,7 @@ const NewHome: React.FC = () => {
               </Select>
 
               <Select value={filters.industry} onValueChange={(value) => setFilters({ ...filters, industry: value })}>
-                <SelectTrigger className="rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-colors">
+                <SelectTrigger className="rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-all duration-200 hover:shadow-md">
                   <SelectValue placeholder="Industry" />
                 </SelectTrigger>
                 <SelectContent className="rounded-2xl border-2 border-gray-200 shadow-lg">
@@ -405,23 +577,40 @@ const NewHome: React.FC = () => {
             {opportunities.map((opportunity) => (
               <div 
                 key={opportunity._id} 
-                className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
-                onClick={() => navigate(`/organization/${opportunity.organization._id}`)}
+                className={`bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-300 cursor-pointer group hover:shadow-xl hover:scale-105 hover:border-blue-200 ${
+                  hoveredCard === opportunity._id ? 'ring-2 ring-blue-500 ring-opacity-50' : ''
+                }`}
+                onClick={() => handleCardClick(opportunity)}
+                onMouseEnter={() => setHoveredCard(opportunity._id)}
+                onMouseLeave={() => setHoveredCard(null)}
               >
                 {/* Placeholder for image - using a colored background with icon */}
-                <div className="h-48 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center relative">
-                  <Building2 className="h-16 w-16 text-blue-600" />
-                  <div className="absolute top-3 right-3">
+                <div className="h-48 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center relative overflow-hidden">
+                  <Building2 className="h-16 w-16 text-blue-600 transition-transform duration-300 group-hover:scale-110" />
+                  <div className="absolute top-3 right-3 flex gap-2">
                     <Button 
                       variant="ghost" 
                       size="sm" 
-                      className="p-1 h-8 w-8 rounded-full bg-white/80 hover:bg-white"
+                      className={`p-1 h-8 w-8 rounded-full bg-white/80 hover:bg-white transition-all duration-200 hover:scale-110 ${
+                        favorites.has(opportunity._id) ? 'text-red-500' : 'text-gray-600'
+                      }`}
                       onClick={(e) => {
                         e.stopPropagation();
-                        // TODO: Implement save functionality
+                        toggleFavorite(opportunity._id);
                       }}
                     >
-                      <Heart className="h-4 w-4 text-gray-600" />
+                      <Heart className={`h-4 w-4 ${favorites.has(opportunity._id) ? 'fill-current' : ''}`} />
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="p-1 h-8 w-8 rounded-full bg-white/80 hover:bg-white transition-all duration-200 hover:scale-110 opacity-0 group-hover:opacity-100"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleQuickApply(e, opportunity);
+                      }}
+                    >
+                      <ArrowRight className="h-4 w-4 text-blue-600" />
                     </Button>
                   </div>
                   <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-1">
