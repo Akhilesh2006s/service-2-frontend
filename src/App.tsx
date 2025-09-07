@@ -108,8 +108,8 @@ const HomeRoute = () => {
     }
   }
   
-  // Show fake data home for non-authenticated users
-  return <FakeDataHome />;
+  // Show LinkedIn-style home for non-authenticated users
+  return <LinkedInHome />;
 };
 
 const App = () => (
