@@ -17,6 +17,7 @@ import {
   Plus,
   Eye,
   UserCheck,
+  UserX,
   Clock,
   CheckCircle
 } from 'lucide-react';
@@ -210,9 +211,46 @@ const OrganizationDashboard = () => {
                           }>
                             {application.status}
                           </Badge>
-                          <Button size="sm" variant="outline">
+                          <Button 
+                            size="sm" 
+                            variant="outline"
+                            onClick={() => setActiveTab('applications')}
+                          >
                             <Eye className="h-4 w-4" />
                           </Button>
+                          {application.status === 'submitted' && (
+                            <div className="flex space-x-1">
+                              <Button 
+                                size="sm" 
+                                className="bg-green-600 hover:bg-green-700 text-white"
+                                onClick={async () => {
+                                  try {
+                                    await apiService.updateApplicationStatus(application._id, 'shortlisted');
+                                    fetchDashboardData(); // Refresh data
+                                  } catch (error) {
+                                    console.error('Failed to update status:', error);
+                                  }
+                                }}
+                              >
+                                <UserCheck className="h-3 w-3" />
+                              </Button>
+                              <Button 
+                                size="sm" 
+                                variant="outline"
+                                className="text-red-600 hover:text-red-700"
+                                onClick={async () => {
+                                  try {
+                                    await apiService.updateApplicationStatus(application._id, 'rejected');
+                                    fetchDashboardData(); // Refresh data
+                                  } catch (error) {
+                                    console.error('Failed to update status:', error);
+                                  }
+                                }}
+                              >
+                                <UserX className="h-3 w-3" />
+                              </Button>
+                            </div>
+                          )}
                         </div>
                       </div>
                     ))}
