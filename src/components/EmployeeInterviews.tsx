@@ -56,28 +56,46 @@ const EmployeeInterviews: React.FC = () => {
   const fetchInterviews = async () => {
     try {
       setLoading(true);
+      console.log('🔍 Fetching employee applications...');
+      
       // For now, we'll fetch applications with interview status
       // In a real app, you'd have a dedicated interviews endpoint
       const response = await apiService.getEmployeeApplications();
-      console.log('API Response:', response); // Debug log
+      console.log('📊 Full API Response:', response);
       
       if (response.status === 'success') {
         // The API returns data.applications array
         const applications = response.data?.applications || [];
+        console.log('📋 All Applications:', applications.length, applications);
+        
+        // Check each application's status and interview data
+        applications.forEach((app, index) => {
+          console.log(`\n📄 Application ${index + 1}:`, {
+            id: app._id,
+            status: app.status,
+            hasInterviewData: !!app.interviewData,
+            interviewData: app.interviewData,
+            opportunity: app.opportunity?.title,
+            organization: app.organization?.name
+          });
+        });
         
         // Filter applications that have interview status
-        const interviewApplications = applications.filter((app: any) => 
-          app.status === 'interview' && app.interviewData
-        );
+        const interviewApplications = applications.filter((app: any) => {
+          const hasInterviewStatus = app.status === 'interview';
+          const hasInterviewData = !!app.interviewData;
+          console.log(`🎯 App ${app._id}: status=${app.status}, hasData=${hasInterviewData}, matches=${hasInterviewStatus && hasInterviewData}`);
+          return hasInterviewStatus && hasInterviewData;
+        });
         
-        console.log('Interview Applications:', interviewApplications); // Debug log
+        console.log('🎯 Final Interview Applications:', interviewApplications.length, interviewApplications);
         setInterviews(interviewApplications);
       } else {
-        console.log('API response status not success:', response);
+        console.log('❌ API response status not success:', response);
         setInterviews([]);
       }
     } catch (error) {
-      console.error('Failed to fetch interviews:', error);
+      console.error('💥 Failed to fetch interviews:', error);
       toast({
         title: "Error",
         description: "Failed to load interview data",
