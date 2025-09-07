@@ -66,7 +66,10 @@ interface Opportunity {
       level: string;
       required: boolean;
     }>;
-    experience?: string;
+    experience?: string | {
+      minYears: number;
+      required: boolean;
+    };
     education?: string;
   };
   benefits?: string[];
@@ -288,7 +291,12 @@ const OpportunityDetail: React.FC = () => {
                   {opportunity.requirements.experience && (
                     <div>
                       <h4 className="font-semibold text-gray-900 mb-2">Experience</h4>
-                      <p className="text-gray-700">{opportunity.requirements.experience}</p>
+                      <p className="text-gray-700">
+                        {typeof opportunity.requirements.experience === 'string' 
+                          ? opportunity.requirements.experience 
+                          : `${opportunity.requirements.experience.minYears || 'N/A'} years experience${opportunity.requirements.experience.required ? ' (required)' : ''}`
+                        }
+                      </p>
                     </div>
                   )}
                   
