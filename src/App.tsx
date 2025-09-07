@@ -84,6 +84,34 @@ const PublicRoute = ({ children }) => {
   return children;
 };
 
+// Home Route Component (shows fake data for non-authenticated users, redirects authenticated users)
+const HomeRoute = () => {
+  const { isAuthenticated, user, loading } = useAuth();
+  
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <div className="text-center">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary mx-auto mb-4"></div>
+          <p>Loading...</p>
+        </div>
+      </div>
+    );
+  }
+  
+  if (isAuthenticated) {
+    // Redirect to appropriate dashboard based on role
+    if (user?.role === 'organization') {
+      return <Navigate to="/organization-dashboard" replace />;
+    } else if (user?.role === 'employee') {
+      return <Navigate to="/employee-dashboard" replace />;
+    }
+  }
+  
+  // Show fake data home for non-authenticated users
+  return <FakeDataHome />;
+};
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
@@ -92,7 +120,7 @@ const App = () => (
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<FakeDataHome />} />
+            <Route path="/" element={<HomeRoute />} />
             <Route path="/landing" element={<Index />} />
             <Route 
               path="/login" 
