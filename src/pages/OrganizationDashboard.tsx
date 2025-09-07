@@ -5,6 +5,7 @@ import apiService from '../services/api';
 import Header from '../components/Header';
 import CreateOpportunityModal from '../components/CreateOpportunityModal';
 import ApplicationsManagement from '../components/ApplicationsManagement';
+import OrganizationInterviews from '../components/OrganizationInterviews';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -19,7 +20,8 @@ import {
   UserCheck,
   UserX,
   Clock,
-  CheckCircle
+  CheckCircle,
+  Calendar
 } from 'lucide-react';
 
 const OrganizationDashboard = () => {
@@ -118,6 +120,7 @@ const OrganizationDashboard = () => {
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="opportunities">Opportunities</TabsTrigger>
             <TabsTrigger value="applications">Applications</TabsTrigger>
+            <TabsTrigger value="interviews">Interviews</TabsTrigger>
             <TabsTrigger value="analytics">Analytics</TabsTrigger>
           </TabsList>
 
@@ -327,6 +330,10 @@ const OrganizationDashboard = () => {
 
           <TabsContent value="applications">
             <ApplicationsManagement organizationId={organization?._id} />
+          </TabsContent>
+
+          <TabsContent value="interviews">
+            <OrganizationInterviews />
           </TabsContent>
 
           <TabsContent value="analytics">
