@@ -115,13 +115,7 @@ const LinkedInHomeFeed: React.FC<LinkedInHomeFeedProps> = ({
     fetchOpportunities();
   };
 
-  const handleApply = (postId: string) => {
-    toast({
-      title: "Application Started",
-      description: "Redirecting to application form...",
-    });
-    // TODO: Implement application flow
-  };
+  // Application handling is now done within LinkedInStylePost component
 
   const handleSave = (postId: string) => {
     toast({
@@ -336,7 +330,6 @@ const LinkedInHomeFeed: React.FC<LinkedInHomeFeedProps> = ({
             <LinkedInStylePost
               key={opportunity._id}
               post={opportunity}
-              onApply={handleApply}
               onSave={handleSave}
               onShare={handleShare}
               showActions={userRole === 'employee'}

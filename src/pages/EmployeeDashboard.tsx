@@ -3,7 +3,6 @@ import { useAuth } from '../contexts/AuthContext';
 import apiService from '../services/api';
 import Header from '../components/Header';
 import SkillsAndInterestsForm from '../components/SkillsAndInterestsForm';
-import RecommendationsSection from '../components/RecommendationsSection';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -58,7 +57,6 @@ const EmployeeDashboard = () => {
 
   const stats = dashboardData?.stats || {};
   const recentApplications = dashboardData?.recentApplications || [];
-  const recommendations = dashboardData?.recommendedOpportunities || [];
 
   return (
     <div className="min-h-screen bg-background">
@@ -90,7 +88,6 @@ const EmployeeDashboard = () => {
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="applications">Applications</TabsTrigger>
             <TabsTrigger value="opportunities">Opportunities</TabsTrigger>
-            <TabsTrigger value="recommendations">Recommendations</TabsTrigger>
             <TabsTrigger value="profile">Profile & Skills</TabsTrigger>
           </TabsList>
 
@@ -199,50 +196,6 @@ const EmployeeDashboard = () => {
               </CardContent>
             </Card>
 
-            {/* Recommended Opportunities */}
-            <Card>
-              <CardHeader>
-                <CardTitle>Recommended for You</CardTitle>
-                <CardDescription>
-                  Opportunities matched to your skills and preferences
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {recommendations.length > 0 ? (
-                  <div className="space-y-4">
-                    {recommendations.map((opportunity) => (
-                      <div key={opportunity._id} className="flex items-center justify-between p-4 border rounded-lg">
-                        <div className="flex items-center space-x-4">
-                          <div className="w-10 h-10 bg-muted rounded-full flex items-center justify-center">
-                            <Star className="h-5 w-5" />
-                          </div>
-                          <div>
-                            <p className="font-medium">{opportunity.title}</p>
-                            <p className="text-sm text-muted-foreground">
-                              {opportunity.organization?.name} • {opportunity.type}
-                            </p>
-                          </div>
-                        </div>
-                        <div className="flex items-center space-x-2">
-                          <Badge variant="outline">
-                            {opportunity.location?.type}
-                          </Badge>
-                          <Button size="sm">
-                            Apply
-                          </Button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div className="text-center py-8">
-                    <Star className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-                    <p className="text-muted-foreground">No recommendations yet</p>
-                    <p className="text-sm text-muted-foreground">Complete your profile to get personalized recommendations</p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
           </TabsContent>
 
           <TabsContent value="applications">
@@ -279,9 +232,6 @@ const EmployeeDashboard = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="recommendations">
-            <RecommendationsSection employeeId={profile?._id} />
-          </TabsContent>
 
           <TabsContent value="profile">
             <Card>
@@ -291,7 +241,7 @@ const EmployeeDashboard = () => {
                   Profile & Skills
                 </CardTitle>
                 <CardDescription>
-                  Manage your skills, interests, and profile information to get better recommendations
+                  Manage your skills, interests, and profile information
                 </CardDescription>
               </CardHeader>
               <CardContent>
@@ -299,10 +249,8 @@ const EmployeeDashboard = () => {
                   initialSkills={profile?.skills || []}
                   initialInterests={profile?.interests || []}
                   onSave={(skills, interests) => {
-                    // Refresh recommendations after saving
-                    if (activeTab === 'recommendations') {
-                      window.location.reload();
-                    }
+                    // Skills and interests updated
+                    console.log('Skills and interests updated:', skills, interests);
                   }}
                 />
               </CardContent>

@@ -60,14 +60,6 @@ const Header = () => {
                 >
                   Dashboard
                 </button>
-                {isEmployee && (
-                  <button 
-                    onClick={() => navigate('/employee-dashboard?tab=recommendations')}
-                    className="text-foreground hover:text-primary font-medium transition-colors"
-                  >
-                    Recommendations
-                  </button>
-                )}
               </>
             )}
           </nav>
