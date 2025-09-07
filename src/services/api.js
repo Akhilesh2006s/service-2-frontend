@@ -1,4 +1,7 @@
-const API_BASE_URL = 'http://localhost:5000/api';
+import { getApiUrl } from '../config/api';
+
+// Use Railway production backend
+const API_BASE_URL = getApiUrl();
 
 class ApiService {
   constructor() {
