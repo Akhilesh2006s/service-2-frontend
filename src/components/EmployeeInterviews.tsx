@@ -59,12 +59,22 @@ const EmployeeInterviews: React.FC = () => {
       // For now, we'll fetch applications with interview status
       // In a real app, you'd have a dedicated interviews endpoint
       const response = await apiService.getEmployeeApplications();
+      console.log('API Response:', response); // Debug log
+      
       if (response.status === 'success') {
+        // The API returns data.applications array
+        const applications = response.data?.applications || [];
+        
         // Filter applications that have interview status
-        const interviewApplications = response.data.filter((app: any) => 
+        const interviewApplications = applications.filter((app: any) => 
           app.status === 'interview' && app.interviewData
         );
+        
+        console.log('Interview Applications:', interviewApplications); // Debug log
         setInterviews(interviewApplications);
+      } else {
+        console.log('API response status not success:', response);
+        setInterviews([]);
       }
     } catch (error) {
       console.error('Failed to fetch interviews:', error);
@@ -73,6 +83,7 @@ const EmployeeInterviews: React.FC = () => {
         description: "Failed to load interview data",
         variant: "destructive",
       });
+      setInterviews([]);
     } finally {
       setLoading(false);
     }

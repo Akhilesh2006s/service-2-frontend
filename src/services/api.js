@@ -199,10 +199,14 @@ class ApiService {
     return this.request(`/applications?${queryString}`);
   }
 
-  async updateApplicationStatus(applicationId, status, note) {
+  async updateApplicationStatus(applicationId, status, note, interviewData = null) {
+    const body = { status, note };
+    if (interviewData) {
+      body.interviewData = interviewData;
+    }
     return this.request(`/applications/${applicationId}/status`, {
       method: 'PUT',
-      body: JSON.stringify({ status, note }),
+      body: JSON.stringify(body),
     });
   }
 
