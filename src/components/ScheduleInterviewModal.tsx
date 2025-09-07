@@ -76,6 +76,7 @@ const ScheduleInterviewModal: React.FC<ScheduleInterviewModalProps> = ({
       };
 
       console.log('📤 Sending interview data:', interviewInfo);
+      console.log('🌐 Using API endpoint: /organizations/applications/' + application._id + '/status');
 
       // Update application status to 'interview-scheduled' and add interview details
       const result = await apiService.updateApplicationStatus(
@@ -86,6 +87,8 @@ const ScheduleInterviewModal: React.FC<ScheduleInterviewModalProps> = ({
       );
       
       console.log('✅ Interview scheduling result:', result);
+      console.log('🔍 Result status:', result?.status);
+      console.log('🔍 Result data:', result?.data);
 
       // TODO: Send notification to employee about the interview
       // This would typically be done through email or in-app notification

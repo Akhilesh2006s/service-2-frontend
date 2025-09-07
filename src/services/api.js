@@ -120,6 +120,8 @@ class ApiService {
     if (interviewData) {
       body.interviewData = interviewData;
     }
+    console.log('🚀 API Request to /organizations/applications/' + applicationId + '/status');
+    console.log('📦 Request body:', body);
     return this.request(`/organizations/applications/${applicationId}/status`, {
       method: 'PUT',
       body: JSON.stringify(body),
