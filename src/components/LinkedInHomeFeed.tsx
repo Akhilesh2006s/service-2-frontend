@@ -165,10 +165,10 @@ const LinkedInHomeFeed: React.FC<LinkedInHomeFeedProps> = ({
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-                  className="pl-10"
+                  className="pl-10 rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-colors"
                 />
               </div>
-              <Button onClick={handleSearch} variant="outline">
+              <Button onClick={handleSearch} variant="outline" className="rounded-full border-2 border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-colors">
                 Search
               </Button>
             </div>
@@ -176,7 +176,7 @@ const LinkedInHomeFeed: React.FC<LinkedInHomeFeedProps> = ({
             {/* Filters */}
             <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
               <Select value={filters.type} onValueChange={(value) => setFilters({ ...filters, type: value })}>
-                <SelectTrigger>
+                <SelectTrigger className="rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-colors">
                   <SelectValue placeholder="Job Type" />
                 </SelectTrigger>
                 <SelectContent>
@@ -190,7 +190,7 @@ const LinkedInHomeFeed: React.FC<LinkedInHomeFeedProps> = ({
               </Select>
 
               <Select value={filters.category} onValueChange={(value) => setFilters({ ...filters, category: value })}>
-                <SelectTrigger>
+                <SelectTrigger className="rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-colors">
                   <SelectValue placeholder="Category" />
                 </SelectTrigger>
                 <SelectContent>
@@ -206,7 +206,7 @@ const LinkedInHomeFeed: React.FC<LinkedInHomeFeedProps> = ({
               </Select>
 
               <Select value={filters.location} onValueChange={(value) => setFilters({ ...filters, location: value })}>
-                <SelectTrigger>
+                <SelectTrigger className="rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-colors">
                   <SelectValue placeholder="Location" />
                 </SelectTrigger>
                 <SelectContent>
@@ -218,7 +218,7 @@ const LinkedInHomeFeed: React.FC<LinkedInHomeFeedProps> = ({
               </Select>
 
               <Select value={filters.industry} onValueChange={(value) => setFilters({ ...filters, industry: value })}>
-                <SelectTrigger>
+                <SelectTrigger className="rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-colors">
                   <SelectValue placeholder="Industry" />
                 </SelectTrigger>
                 <SelectContent>
@@ -237,7 +237,7 @@ const LinkedInHomeFeed: React.FC<LinkedInHomeFeedProps> = ({
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <Select value={sortBy} onValueChange={setSortBy}>
-                  <SelectTrigger className="w-40">
+                  <SelectTrigger className="w-40 rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-colors">
                     <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
@@ -247,11 +247,11 @@ const LinkedInHomeFeed: React.FC<LinkedInHomeFeedProps> = ({
                     <SelectItem value="deadline">Deadline</SelectItem>
                   </SelectContent>
                 </Select>
-                <Button variant="ghost" size="sm" onClick={clearFilters}>
+                <Button variant="ghost" size="sm" onClick={clearFilters} className="rounded-full border border-gray-200 hover:border-red-300 hover:bg-red-50 transition-colors">
                   Clear Filters
                 </Button>
               </div>
-              <Button variant="ghost" size="sm" onClick={fetchOpportunities}>
+              <Button variant="ghost" size="sm" onClick={fetchOpportunities} className="rounded-full border border-gray-200 hover:border-blue-300 hover:bg-blue-50 transition-colors">
                 <RefreshCw className="h-4 w-4 mr-2" />
                 Refresh
               </Button>
@@ -264,31 +264,31 @@ const LinkedInHomeFeed: React.FC<LinkedInHomeFeedProps> = ({
       {(filters.type !== 'all' || filters.category !== 'all' || filters.location !== 'all' || filters.industry !== 'all' || searchTerm) && (
         <div className="flex flex-wrap gap-2">
           {searchTerm && (
-            <Badge variant="secondary" className="flex items-center gap-1">
+            <Badge variant="secondary" className="flex items-center gap-1 rounded-full px-4 py-2 bg-blue-100 text-blue-800 border border-blue-200">
               Search: {searchTerm}
               <button onClick={() => setSearchTerm('')} className="ml-1 hover:text-red-500">×</button>
             </Badge>
           )}
           {filters.type !== 'all' && (
-            <Badge variant="secondary" className="flex items-center gap-1">
+            <Badge variant="secondary" className="flex items-center gap-1 rounded-full px-4 py-2 bg-green-100 text-green-800 border border-green-200">
               Type: {filters.type}
               <button onClick={() => setFilters({ ...filters, type: 'all' })} className="ml-1 hover:text-red-500">×</button>
             </Badge>
           )}
           {filters.category !== 'all' && (
-            <Badge variant="secondary" className="flex items-center gap-1">
+            <Badge variant="secondary" className="flex items-center gap-1 rounded-full px-4 py-2 bg-purple-100 text-purple-800 border border-purple-200">
               Category: {filters.category}
               <button onClick={() => setFilters({ ...filters, category: 'all' })} className="ml-1 hover:text-red-500">×</button>
             </Badge>
           )}
           {filters.location !== 'all' && (
-            <Badge variant="secondary" className="flex items-center gap-1">
+            <Badge variant="secondary" className="flex items-center gap-1 rounded-full px-4 py-2 bg-orange-100 text-orange-800 border border-orange-200">
               Location: {filters.location}
               <button onClick={() => setFilters({ ...filters, location: 'all' })} className="ml-1 hover:text-red-500">×</button>
             </Badge>
           )}
           {filters.industry !== 'all' && (
-            <Badge variant="secondary" className="flex items-center gap-1">
+            <Badge variant="secondary" className="flex items-center gap-1 rounded-full px-4 py-2 bg-pink-100 text-pink-800 border border-pink-200">
               Industry: {filters.industry}
               <button onClick={() => setFilters({ ...filters, industry: 'all' })} className="ml-1 hover:text-red-500">×</button>
             </Badge>
