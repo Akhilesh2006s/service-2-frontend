@@ -116,11 +116,17 @@ const OpportunityDetail: React.FC = () => {
   };
 
   const handleApply = () => {
+    console.log('Apply button clicked in OpportunityDetail');
+    console.log('User:', user);
+    console.log('User role:', user?.role);
+    
     if (!user) {
+      console.log('No user, redirecting to login');
       navigate('/login');
       return;
     }
     if (user.role !== 'employee') {
+      console.log('User is not employee, showing access denied');
       toast({
         title: "Access Denied",
         description: "Only employees can apply to opportunities",
@@ -128,6 +134,7 @@ const OpportunityDetail: React.FC = () => {
       });
       return;
     }
+    console.log('Setting modal to true');
     setShowApplicationModal(true);
   };
 
@@ -156,8 +163,18 @@ const OpportunityDetail: React.FC = () => {
   };
 
   const formatSalary = (compensation: any) => {
-    if (!compensation.amount) return 'Competitive';
-    return `$${compensation.amount.toLocaleString()}/${compensation.type === 'salary' ? 'year' : 'month'}`;
+    if (!compensation || !compensation.amount) return 'Competitive';
+    
+    // Handle different compensation types
+    if (compensation.type === 'salary') {
+      return `$${compensation.amount.toLocaleString()}/year`;
+    } else if (compensation.type === 'hourly') {
+      return `$${compensation.amount.toLocaleString()}/hour`;
+    } else if (compensation.type === 'monthly') {
+      return `$${compensation.amount.toLocaleString()}/month`;
+    } else {
+      return `$${compensation.amount.toLocaleString()}/${compensation.type || 'period'}`;
+    }
   };
 
   const formatDate = (dateString: string) => {
@@ -465,8 +482,12 @@ const OpportunityDetail: React.FC = () => {
       {/* Application Modal - Only for employees */}
       {showApplicationModal && opportunity && user?.role === 'employee' && (
         <ApplicationModal
+          isOpen={showApplicationModal}
           opportunity={opportunity}
-          onClose={() => setShowApplicationModal(false)}
+          onClose={() => {
+            console.log('Closing application modal');
+            setShowApplicationModal(false);
+          }}
         />
       )}
     </div>
