@@ -16,7 +16,8 @@ import {
   Clock,
   Users,
   TrendingUp,
-  RefreshCw
+  RefreshCw,
+  Star
 } from 'lucide-react';
 
 interface Opportunity {
