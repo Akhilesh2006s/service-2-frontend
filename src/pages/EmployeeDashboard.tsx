@@ -75,8 +75,10 @@ const EmployeeDashboard = () => {
   };
 
   const handleApply = (opportunity) => {
+    console.log('Apply button clicked for opportunity:', opportunity);
     setSelectedOpportunity(opportunity);
     setShowApplicationModal(true);
+    console.log('Modal state set to true');
   };
 
   const handleCardClick = (opportunity) => {
@@ -312,6 +314,8 @@ const EmployeeDashboard = () => {
                               className="p-1 h-8 w-8 rounded-full bg-white/80 hover:bg-white transition-all duration-200 hover:scale-110 opacity-0 group-hover:opacity-100"
                               onClick={(e) => {
                                 e.stopPropagation();
+                                e.preventDefault();
+                                console.log('Button clicked, calling handleApply');
                                 handleApply(opportunity);
                               }}
                             >
@@ -348,7 +352,7 @@ const EmployeeDashboard = () => {
                             </div>
                           </div>
 
-                          <div className="flex items-center justify-between">
+                          <div className="flex items-center justify-between mb-3">
                             <div className="flex items-center text-sm">
                               <Star className="h-4 w-4 text-yellow-400 mr-1" />
                               <span className="text-gray-600">4.6</span>
@@ -357,6 +361,20 @@ const EmployeeDashboard = () => {
                               {formatSalary(opportunity.compensation)}
                             </div>
                           </div>
+                          
+                          <Button
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              e.preventDefault();
+                              console.log('Apply button clicked');
+                              handleApply(opportunity);
+                            }}
+                            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                            size="sm"
+                          >
+                            <ArrowRight className="h-4 w-4 mr-2" />
+                            Apply Now
+                          </Button>
                         </div>
                       </div>
                     ))}
@@ -396,6 +414,7 @@ const EmployeeDashboard = () => {
       {/* Application Modal */}
       {showApplicationModal && selectedOpportunity && (
         <ApplicationModal
+          isOpen={showApplicationModal}
           opportunity={selectedOpportunity}
           onClose={() => {
             setShowApplicationModal(false);
