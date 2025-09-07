@@ -6,6 +6,7 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Index from "./pages/Index";
 import FakeDataHome from "./pages/FakeDataHome";
+import LinkedInHome from "./pages/LinkedInHome";
 import Login from "./pages/Login";
 import OrganizationDashboard from "./pages/OrganizationDashboard";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
