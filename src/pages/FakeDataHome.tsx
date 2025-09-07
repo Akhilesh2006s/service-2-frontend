@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { Badge } from '../components/ui/badge';
@@ -104,6 +105,7 @@ const fakeOpportunities = [
 ];
 
 const FakeDataHome = () => {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [likedJobs, setLikedJobs] = useState<number[]>([]);
   const [savedJobs, setSavedJobs] = useState<number[]>([]);
@@ -137,10 +139,10 @@ const FakeDataHome = () => {
       <header className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-blue-600">Inkaranya</h1>
+            <h1 className="text-2xl font-bold text-blue-600 cursor-pointer" onClick={() => navigate('/')}>Inkaranya</h1>
             <div className="flex items-center space-x-4">
-              <Button variant="outline">Sign In</Button>
-              <Button>Get Started</Button>
+              <Button variant="outline" onClick={() => navigate('/login')}>Sign In</Button>
+              <Button onClick={() => navigate('/login')}>Get Started</Button>
             </div>
           </div>
         </div>
@@ -156,8 +158,8 @@ const FakeDataHome = () => {
             Connect with top organizations and find opportunities that match your skills
           </p>
           <div className="flex justify-center space-x-4">
-            <Button size="lg">Get Started</Button>
-            <Button variant="outline" size="lg">Sign In</Button>
+            <Button size="lg" onClick={() => navigate('/login')}>Get Started</Button>
+            <Button variant="outline" size="lg" onClick={() => navigate('/login')}>Sign In</Button>
           </div>
         </div>
       </section>
