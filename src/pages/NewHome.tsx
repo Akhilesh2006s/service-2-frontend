@@ -324,14 +324,6 @@ const NewHome: React.FC = () => {
                   variant="ghost" 
                   size="sm"
                   className="h-10 w-10 rounded-full hover:bg-gray-100 transition-all duration-200 hover:scale-105"
-                  title="Language"
-                >
-                  🌐
-                </Button>
-                <Button 
-                  variant="ghost" 
-                  size="sm"
-                  className="h-10 w-10 rounded-full hover:bg-gray-100 transition-all duration-200 hover:scale-105"
                   title="Menu"
                 >
                   ☰
