@@ -231,6 +231,14 @@ const LinkedInHome: React.FC = () => {
       navigate('/login');
       return;
     }
+    if (user.role !== 'employee') {
+      toast({
+        title: "Access Denied",
+        description: "Only employees can apply to opportunities",
+        variant: "destructive",
+      });
+      return;
+    }
     setSelectedOpportunity(opportunity);
     setShowApplicationModal(true);
   };
@@ -437,17 +445,19 @@ const LinkedInHome: React.FC = () => {
                   >
                     <Heart className={`h-4 w-4 ${favorites.has(opportunity._id) ? 'fill-current' : ''}`} />
                   </Button>
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="p-1 h-8 w-8 rounded-full bg-white/80 hover:bg-white transition-all duration-200 hover:scale-110 opacity-0 group-hover:opacity-100"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      handleQuickApply(e, opportunity);
-                    }}
-                  >
-                    <ArrowRight className="h-4 w-4 text-blue-600" />
-                  </Button>
+                  {user?.role === 'employee' && (
+                    <Button
+                      variant="ghost"
+                      size="sm"
+                      className="p-1 h-8 w-8 rounded-full bg-white/80 hover:bg-white transition-all duration-200 hover:scale-110 opacity-0 group-hover:opacity-100"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleQuickApply(e, opportunity);
+                      }}
+                    >
+                      <ArrowRight className="h-4 w-4 text-blue-600" />
+                    </Button>
+                  )}
                 </div>
                 <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex space-x-1">
                   <div className="w-2 h-2 bg-white rounded-full"></div>
@@ -500,8 +510,8 @@ const LinkedInHome: React.FC = () => {
         )}
       </div>
 
-      {/* Application Modal */}
-      {showApplicationModal && selectedOpportunity && (
+      {/* Application Modal - Only for employees */}
+      {showApplicationModal && selectedOpportunity && user?.role === 'employee' && (
         <ApplicationModal
           opportunity={selectedOpportunity}
           onClose={() => {
