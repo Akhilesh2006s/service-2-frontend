@@ -18,10 +18,12 @@ import {
   MapPin,
   GraduationCap,
   Briefcase,
-  Star
+  Star,
+  ExternalLink
 } from 'lucide-react';
 import { useToast } from '../hooks/use-toast';
 import apiService from '../services/api';
+import ScheduleInterviewModal from './ScheduleInterviewModal';
 
 interface Application {
   _id: string;
@@ -115,6 +117,8 @@ const ApplicationsManagement: React.FC<ApplicationsManagementProps> = ({ organiz
   const [loading, setLoading] = useState(true);
   const [selectedApplication, setSelectedApplication] = useState<Application | null>(null);
   const [statusFilter, setStatusFilter] = useState('all');
+  const [showInterviewModal, setShowInterviewModal] = useState(false);
+  const [interviewApplication, setInterviewApplication] = useState<Application | null>(null);
   const { toast } = useToast();
 
   const fetchApplications = async () => {
@@ -156,6 +160,17 @@ const ApplicationsManagement: React.FC<ApplicationsManagementProps> = ({ organiz
         variant: "destructive",
       });
     }
+  };
+
+  const handleScheduleInterview = (application: Application) => {
+    setInterviewApplication(application);
+    setShowInterviewModal(true);
+  };
+
+  const handleInterviewScheduled = () => {
+    fetchApplications();
+    setShowInterviewModal(false);
+    setInterviewApplication(null);
   };
 
   const getStatusColor = (status: string) => {
@@ -337,7 +352,7 @@ const ApplicationsManagement: React.FC<ApplicationsManagementProps> = ({ organiz
                       View Details
                     </Button>
                     
-                    {application.documents.resume && (
+                    {application.documents.resume ? (
                       <Button
                         variant="outline"
                         size="sm"
@@ -346,6 +361,39 @@ const ApplicationsManagement: React.FC<ApplicationsManagementProps> = ({ organiz
                         <Download className="h-4 w-4 mr-2" />
                         Resume
                       </Button>
+                    ) : (
+                      <div className="flex gap-1">
+                        {application.documents.portfolio && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => window.open(application.documents.portfolio, '_blank')}
+                          >
+                            <FileText className="h-4 w-4 mr-2" />
+                            Portfolio
+                          </Button>
+                        )}
+                        {application.documents.linkedin && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => window.open(application.documents.linkedin, '_blank')}
+                          >
+                            <ExternalLink className="h-4 w-4 mr-2" />
+                            LinkedIn
+                          </Button>
+                        )}
+                        {application.documents.github && (
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            onClick={() => window.open(application.documents.github, '_blank')}
+                          >
+                            <ExternalLink className="h-4 w-4 mr-2" />
+                            GitHub
+                          </Button>
+                        )}
+                      </div>
                     )}
 
                     <div className="flex gap-1">
@@ -555,7 +603,10 @@ const ApplicationsManagement: React.FC<ApplicationsManagementProps> = ({ organiz
                   Shortlist
                 </Button>
                 <Button
-                  onClick={() => updateApplicationStatus(selectedApplication._id, 'interview')}
+                  onClick={() => {
+                    setSelectedApplication(null);
+                    handleScheduleInterview(selectedApplication);
+                  }}
                   className="bg-blue-600 hover:bg-blue-700"
                 >
                   <Calendar className="h-4 w-4 mr-2" />
@@ -580,6 +631,19 @@ const ApplicationsManagement: React.FC<ApplicationsManagementProps> = ({ organiz
             </div>
           </div>
         </div>
+      )}
+
+      {/* Schedule Interview Modal */}
+      {interviewApplication && (
+        <ScheduleInterviewModal
+          application={interviewApplication}
+          isOpen={showInterviewModal}
+          onClose={() => {
+            setShowInterviewModal(false);
+            setInterviewApplication(null);
+          }}
+          onInterviewScheduled={handleInterviewScheduled}
+        />
       )}
     </div>
   );
