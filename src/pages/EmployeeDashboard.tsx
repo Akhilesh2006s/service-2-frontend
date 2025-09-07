@@ -3,6 +3,7 @@ import { useAuth } from '../contexts/AuthContext';
 import apiService from '../services/api';
 import Header from '../components/Header';
 import SkillsAndInterestsForm from '../components/SkillsAndInterestsForm';
+import EmployeeInterviews from '../components/EmployeeInterviews';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -17,7 +18,8 @@ import {
   CheckCircle,
   Star,
   MapPin,
-  Settings
+  Settings,
+  Calendar
 } from 'lucide-react';
 
 const EmployeeDashboard = () => {
@@ -87,6 +89,7 @@ const EmployeeDashboard = () => {
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="applications">Applications</TabsTrigger>
+            <TabsTrigger value="interviews">Interviews</TabsTrigger>
             <TabsTrigger value="opportunities">Opportunities</TabsTrigger>
             <TabsTrigger value="profile">Profile & Skills</TabsTrigger>
           </TabsList>
@@ -213,6 +216,10 @@ const EmployeeDashboard = () => {
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="interviews">
+            <EmployeeInterviews />
           </TabsContent>
 
           <TabsContent value="opportunities">
