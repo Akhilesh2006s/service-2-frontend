@@ -179,13 +179,13 @@ const LinkedInHomeFeed: React.FC<LinkedInHomeFeedProps> = ({
                 <SelectTrigger className="rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-colors">
                   <SelectValue placeholder="Job Type" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Types</SelectItem>
-                  <SelectItem value="full-time">Full-time</SelectItem>
-                  <SelectItem value="part-time">Part-time</SelectItem>
-                  <SelectItem value="contract">Contract</SelectItem>
-                  <SelectItem value="internship">Internship</SelectItem>
-                  <SelectItem value="volunteer">Volunteer</SelectItem>
+                <SelectContent className="rounded-2xl border-2 border-gray-200 shadow-lg">
+                  <SelectItem value="all" className="rounded-xl mx-2 my-1">All Types</SelectItem>
+                  <SelectItem value="full-time" className="rounded-xl mx-2 my-1">Full-time</SelectItem>
+                  <SelectItem value="part-time" className="rounded-xl mx-2 my-1">Part-time</SelectItem>
+                  <SelectItem value="contract" className="rounded-xl mx-2 my-1">Contract</SelectItem>
+                  <SelectItem value="internship" className="rounded-xl mx-2 my-1">Internship</SelectItem>
+                  <SelectItem value="volunteer" className="rounded-xl mx-2 my-1">Volunteer</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -193,15 +193,15 @@ const LinkedInHomeFeed: React.FC<LinkedInHomeFeedProps> = ({
                 <SelectTrigger className="rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-colors">
                   <SelectValue placeholder="Category" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Categories</SelectItem>
-                  <SelectItem value="technology">Technology</SelectItem>
-                  <SelectItem value="business">Business</SelectItem>
-                  <SelectItem value="design">Design</SelectItem>
-                  <SelectItem value="marketing">Marketing</SelectItem>
-                  <SelectItem value="education">Education</SelectItem>
-                  <SelectItem value="healthcare">Healthcare</SelectItem>
-                  <SelectItem value="non-profit">Non-profit</SelectItem>
+                <SelectContent className="rounded-2xl border-2 border-gray-200 shadow-lg">
+                  <SelectItem value="all" className="rounded-xl mx-2 my-1">All Categories</SelectItem>
+                  <SelectItem value="technology" className="rounded-xl mx-2 my-1">Technology</SelectItem>
+                  <SelectItem value="business" className="rounded-xl mx-2 my-1">Business</SelectItem>
+                  <SelectItem value="design" className="rounded-xl mx-2 my-1">Design</SelectItem>
+                  <SelectItem value="marketing" className="rounded-xl mx-2 my-1">Marketing</SelectItem>
+                  <SelectItem value="education" className="rounded-xl mx-2 my-1">Education</SelectItem>
+                  <SelectItem value="healthcare" className="rounded-xl mx-2 my-1">Healthcare</SelectItem>
+                  <SelectItem value="non-profit" className="rounded-xl mx-2 my-1">Non-profit</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -209,11 +209,11 @@ const LinkedInHomeFeed: React.FC<LinkedInHomeFeedProps> = ({
                 <SelectTrigger className="rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-colors">
                   <SelectValue placeholder="Location" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Locations</SelectItem>
-                  <SelectItem value="remote">Remote</SelectItem>
-                  <SelectItem value="on-site">On-site</SelectItem>
-                  <SelectItem value="hybrid">Hybrid</SelectItem>
+                <SelectContent className="rounded-2xl border-2 border-gray-200 shadow-lg">
+                  <SelectItem value="all" className="rounded-xl mx-2 my-1">All Locations</SelectItem>
+                  <SelectItem value="remote" className="rounded-xl mx-2 my-1">Remote</SelectItem>
+                  <SelectItem value="on-site" className="rounded-xl mx-2 my-1">On-site</SelectItem>
+                  <SelectItem value="hybrid" className="rounded-xl mx-2 my-1">Hybrid</SelectItem>
                 </SelectContent>
               </Select>
 
@@ -221,14 +221,14 @@ const LinkedInHomeFeed: React.FC<LinkedInHomeFeedProps> = ({
                 <SelectTrigger className="rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-colors">
                   <SelectValue placeholder="Industry" />
                 </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="all">All Industries</SelectItem>
-                  <SelectItem value="Technology">Technology</SelectItem>
-                  <SelectItem value="Finance">Finance</SelectItem>
-                  <SelectItem value="Healthcare">Healthcare</SelectItem>
-                  <SelectItem value="Education">Education</SelectItem>
-                  <SelectItem value="Entertainment">Entertainment</SelectItem>
-                  <SelectItem value="Automotive">Automotive</SelectItem>
+                <SelectContent className="rounded-2xl border-2 border-gray-200 shadow-lg">
+                  <SelectItem value="all" className="rounded-xl mx-2 my-1">All Industries</SelectItem>
+                  <SelectItem value="Technology" className="rounded-xl mx-2 my-1">Technology</SelectItem>
+                  <SelectItem value="Finance" className="rounded-xl mx-2 my-1">Finance</SelectItem>
+                  <SelectItem value="Healthcare" className="rounded-xl mx-2 my-1">Healthcare</SelectItem>
+                  <SelectItem value="Education" className="rounded-xl mx-2 my-1">Education</SelectItem>
+                  <SelectItem value="Entertainment" className="rounded-xl mx-2 my-1">Entertainment</SelectItem>
+                  <SelectItem value="Automotive" className="rounded-xl mx-2 my-1">Automotive</SelectItem>
                 </SelectContent>
               </Select>
             </div>
@@ -240,11 +240,11 @@ const LinkedInHomeFeed: React.FC<LinkedInHomeFeedProps> = ({
                   <SelectTrigger className="w-40 rounded-full border-2 border-gray-200 hover:border-blue-300 focus:border-blue-500 transition-colors">
                     <SelectValue />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="recent">Most Recent</SelectItem>
-                    <SelectItem value="popular">Most Popular</SelectItem>
-                    <SelectItem value="salary">Highest Salary</SelectItem>
-                    <SelectItem value="deadline">Deadline</SelectItem>
+                  <SelectContent className="rounded-2xl border-2 border-gray-200 shadow-lg">
+                    <SelectItem value="recent" className="rounded-xl mx-2 my-1">Most Recent</SelectItem>
+                    <SelectItem value="popular" className="rounded-xl mx-2 my-1">Most Popular</SelectItem>
+                    <SelectItem value="salary" className="rounded-xl mx-2 my-1">Highest Salary</SelectItem>
+                    <SelectItem value="deadline" className="rounded-xl mx-2 my-1">Deadline</SelectItem>
                   </SelectContent>
                 </Select>
                 <Button variant="ghost" size="sm" onClick={clearFilters} className="rounded-full border border-gray-200 hover:border-red-300 hover:bg-red-50 transition-colors">
