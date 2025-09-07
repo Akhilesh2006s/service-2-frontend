@@ -7,6 +7,7 @@ import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Index from "./pages/Index";
 import FakeDataHome from "./pages/FakeDataHome";
 import LinkedInHome from "./pages/LinkedInHome";
+import NewHome from "./pages/NewHome";
 import Login from "./pages/Login";
 import OrganizationDashboard from "./pages/OrganizationDashboard";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
@@ -100,8 +101,8 @@ const HomeRoute = () => {
     );
   }
   
-  // Show LinkedIn-style home for everyone (authenticated and non-authenticated)
-  return <LinkedInHome />;
+  // Show new Airbnb-style home for everyone (authenticated and non-authenticated)
+  return <NewHome />;
 };
 
 const App = () => (
