@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import Header from '../components/Header';
 import { useNavigate } from 'react-router-dom';
@@ -19,6 +19,9 @@ import {
   RefreshCw,
   Star
 } from 'lucide-react';
+import { useToast } from '../hooks/use-toast';
+import apiService from '../services/api';
+import ApplicationModal from '../components/ApplicationModal';
 
 interface Opportunity {
   _id: string;
@@ -55,8 +58,45 @@ const LinkedInHome: React.FC = () => {
   const [favorites, setFavorites] = useState<Set<string>>(new Set());
   const [hoveredCard, setHoveredCard] = useState<string | null>(null);
   const [searchLoading, setSearchLoading] = useState(false);
+  const [opportunities, setOpportunities] = useState<Opportunity[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [showApplicationModal, setShowApplicationModal] = useState(false);
+  const [selectedOpportunity, setSelectedOpportunity] = useState<Opportunity | null>(null);
+  const { toast } = useToast();
 
-  // Fake opportunities data (same as NewHome)
+  // Fetch real opportunities from API
+  const fetchOpportunities = async () => {
+    setLoading(true);
+    try {
+      const params: any = {};
+      if (searchTerm) params.search = searchTerm;
+      if (filters.type && filters.type !== 'all') params.type = filters.type;
+      if (filters.category && filters.category !== 'all') params.category = filters.category;
+      if (filters.location && filters.location !== 'all') params.location = filters.location;
+      if (filters.industry && filters.industry !== 'all') params.industry = filters.industry;
+      if (sortBy) params.sortBy = sortBy;
+
+      const response = await apiService.getOpportunities(params);
+      setOpportunities(response.data.opportunities || []);
+    } catch (error: any) {
+      console.error('Error fetching opportunities:', error);
+      toast({
+        title: "Error",
+        description: error.message || "Failed to fetch opportunities",
+        variant: "destructive",
+      });
+      // Fallback to empty array if API fails
+      setOpportunities([]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchOpportunities();
+  }, [filters, sortBy]);
+
+  // Fake opportunities data as fallback (same as NewHome)
   const fakeOpportunities: Opportunity[] = [
     {
       _id: '1',
@@ -157,10 +197,8 @@ const LinkedInHome: React.FC = () => {
 
   const handleSearch = async () => {
     setSearchLoading(true);
-    // Simulate search delay
-    setTimeout(() => {
-      setSearchLoading(false);
-    }, 1000);
+    await fetchOpportunities();
+    setSearchLoading(false);
   };
 
   const clearFilters = () => {
@@ -193,8 +231,8 @@ const LinkedInHome: React.FC = () => {
       navigate('/login');
       return;
     }
-    // Handle quick apply logic here
-    console.log('Quick apply to:', opportunity.title);
+    setSelectedOpportunity(opportunity);
+    setShowApplicationModal(true);
   };
 
   const formatSalary = (compensation: any) => {
@@ -352,8 +390,27 @@ const LinkedInHome: React.FC = () => {
 
       {/* Opportunities Grid */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-          {fakeOpportunities.map((opportunity) => (
+        {loading ? (
+          <div className="flex items-center justify-center py-12">
+            <div className="text-center">
+              <RefreshCw className="h-8 w-8 animate-spin text-blue-600 mx-auto mb-4" />
+              <p className="text-gray-600">Loading opportunities...</p>
+            </div>
+          </div>
+        ) : opportunities.length === 0 ? (
+          <div className="text-center py-12">
+            <Building2 className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+            <h3 className="text-lg font-semibold text-gray-900 mb-2">No opportunities found</h3>
+            <p className="text-gray-600 mb-4">
+              Try adjusting your search criteria or check back later for new opportunities.
+            </p>
+            <Button variant="outline" onClick={clearFilters}>
+              Clear Filters
+            </Button>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            {opportunities.map((opportunity) => (
             <div
               key={opportunity._id}
               className={`bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden transition-all duration-300 cursor-pointer group hover:shadow-xl hover:scale-105 hover:border-blue-200 ${
@@ -439,8 +496,20 @@ const LinkedInHome: React.FC = () => {
               </div>
             </div>
           ))}
-        </div>
+          </div>
+        )}
       </div>
+
+      {/* Application Modal */}
+      {showApplicationModal && selectedOpportunity && (
+        <ApplicationModal
+          opportunity={selectedOpportunity}
+          onClose={() => {
+            setShowApplicationModal(false);
+            setSelectedOpportunity(null);
+          }}
+        />
+      )}
     </div>
   );
 };
