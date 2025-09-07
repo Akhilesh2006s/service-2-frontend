@@ -95,89 +95,18 @@ const OpportunityDetail: React.FC = () => {
   const fetchOpportunity = async () => {
     try {
       setLoading(true);
-      // For now, we'll use the fake data structure
-      // In a real app, you'd fetch from the API
-      const fakeOpportunity: Opportunity = {
-        _id: id || '1',
-        title: 'Senior Software Engineer',
-        description: `We are looking for a Senior Software Engineer to join our dynamic team. You will be responsible for designing, developing, and maintaining scalable web applications using modern technologies.
-
-## Key Responsibilities:
-- Design and implement robust, scalable, and maintainable software solutions
-- Collaborate with cross-functional teams to define, design, and ship new features
-- Write clean, efficient, and well-documented code
-- Participate in code reviews and technical discussions
-- Mentor junior developers and contribute to team knowledge sharing
-- Stay up-to-date with emerging technologies and industry best practices
-
-## What We Offer:
-- Competitive salary and comprehensive benefits package
-- Flexible working hours and remote work options
-- Professional development opportunities
-- Collaborative and inclusive work environment
-- Cutting-edge technology stack
-- Opportunity to work on impactful projects`,
-        type: 'Full-time',
-        category: 'Engineering',
-        location: {
-          type: 'remote'
-        },
-        compensation: {
-          type: 'salary',
-          amount: 120000,
-          currency: 'USD'
-        },
-        schedule: {
-          startDate: '2024-02-01',
-          hoursPerWeek: 40
-        },
-        organization: {
-          _id: 'org1',
-          name: 'TechCorp',
-          industry: 'Technology',
-          size: '100-500',
-          location: {
-            city: 'San Francisco',
-            state: 'CA',
-            country: 'USA'
-          },
-          logo: {
-            url: 'https://via.placeholder.com/100x100/3B82F6/FFFFFF?text=TC'
-          },
-          description: 'TechCorp is a leading technology company focused on innovation and excellence.',
-          website: 'https://techcorp.com'
-        },
-        requirements: {
-          skills: [
-            { name: 'JavaScript', level: 'Expert', required: true },
-            { name: 'React', level: 'Expert', required: true },
-            { name: 'Node.js', level: 'Advanced', required: true },
-            { name: 'TypeScript', level: 'Advanced', required: false },
-            { name: 'AWS', level: 'Intermediate', required: false }
-          ],
-          experience: '5+ years of software development experience',
-          education: 'Bachelor\'s degree in Computer Science or related field'
-        },
-        benefits: [
-          'Health, dental, and vision insurance',
-          '401(k) with company matching',
-          'Flexible PTO policy',
-          'Professional development budget',
-          'Home office stipend',
-          'Stock options'
-        ],
-        applicationDeadline: '2024-01-31',
-        createdAt: new Date().toISOString(),
-        updatedAt: new Date().toISOString()
-      };
-      
-      setOpportunity(fakeOpportunity);
+      // Fetch real opportunity data from API
+      const response = await apiService.getOpportunity(id);
+      setOpportunity(response.data.opportunity);
     } catch (error: any) {
+      console.error('Error fetching opportunity:', error);
       toast({
         title: "Error",
         description: error.message || "Failed to fetch opportunity details",
         variant: "destructive",
       });
+      // Fallback to null if API fails
+      setOpportunity(null);
     } finally {
       setLoading(false);
     }
@@ -186,6 +115,14 @@ const OpportunityDetail: React.FC = () => {
   const handleApply = () => {
     if (!user) {
       navigate('/login');
+      return;
+    }
+    if (user.role !== 'employee') {
+      toast({
+        title: "Access Denied",
+        description: "Only employees can apply to opportunities",
+        variant: "destructive",
+      });
       return;
     }
     setShowApplicationModal(true);
@@ -416,14 +353,16 @@ const OpportunityDetail: React.FC = () => {
                     </p>
                   </div>
                   
-                  <Button 
-                    onClick={handleApply}
-                    className="w-full bg-blue-600 hover:bg-blue-700 text-white"
-                    size="lg"
-                  >
-                    <Briefcase className="h-4 w-4 mr-2" />
-                    Apply Now
-                  </Button>
+                  {user?.role === 'employee' && (
+                    <Button 
+                      onClick={handleApply}
+                      className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                      size="lg"
+                    >
+                      <Briefcase className="h-4 w-4 mr-2" />
+                      Apply Now
+                    </Button>
+                  )}
                   
                   <div className="text-center">
                     <Button variant="ghost" onClick={handleSave} className="w-full">
@@ -515,8 +454,8 @@ const OpportunityDetail: React.FC = () => {
         </div>
       </div>
 
-      {/* Application Modal */}
-      {showApplicationModal && opportunity && (
+      {/* Application Modal - Only for employees */}
+      {showApplicationModal && opportunity && user?.role === 'employee' && (
         <ApplicationModal
           opportunity={opportunity}
           onClose={() => setShowApplicationModal(false)}
