@@ -292,13 +292,13 @@ const ApplicationModal: React.FC<ApplicationModalProps> = ({
       // Create application data for submission
       const submissionData = {
         opportunityId: opportunity._id,
-        applicationData: applicationData
+        applicationData: JSON.stringify(applicationData)
       };
 
       // Debug logging
       console.log('Submitting application with data:', {
         opportunityId: opportunity._id,
-        applicationData: applicationData,
+        applicationData: JSON.stringify(applicationData),
         hasResume: !!applicationData.documents.resume,
         hasCoverLetter: !!applicationData.documents.coverLetterFile
       });

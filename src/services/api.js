@@ -106,6 +106,10 @@ class ApiService {
     return this.request(`/organizations/opportunities?${queryString}`);
   }
 
+  async getOrganization(organizationId) {
+    return this.request(`/organizations/${organizationId}`);
+  }
+
   async getOrganizationApplications(params = {}) {
     const queryString = new URLSearchParams(params).toString();
     return this.request(`/organizations/applications?${queryString}`);

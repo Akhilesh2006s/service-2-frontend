@@ -11,6 +11,7 @@ import NewHome from "./pages/NewHome";
 import Login from "./pages/Login";
 import OrganizationDashboard from "./pages/OrganizationDashboard";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
+import OrganizationProfile from "./pages/OrganizationProfile";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -168,6 +169,10 @@ const App = () => (
                   <EmployeeDashboard />
                 </RoleRoute>
               } 
+            />
+            <Route 
+              path="/organization/:organizationId" 
+              element={<OrganizationProfile />} 
             />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

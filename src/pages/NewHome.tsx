@@ -403,12 +403,24 @@ const NewHome: React.FC = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {opportunities.map((opportunity) => (
-              <div key={opportunity._id} className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow cursor-pointer">
+              <div 
+                key={opportunity._id} 
+                className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow cursor-pointer"
+                onClick={() => navigate(`/organization/${opportunity.organization._id}`)}
+              >
                 {/* Placeholder for image - using a colored background with icon */}
                 <div className="h-48 bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center relative">
                   <Building2 className="h-16 w-16 text-blue-600" />
                   <div className="absolute top-3 right-3">
-                    <Button variant="ghost" size="sm" className="p-1 h-8 w-8 rounded-full bg-white/80 hover:bg-white">
+                    <Button 
+                      variant="ghost" 
+                      size="sm" 
+                      className="p-1 h-8 w-8 rounded-full bg-white/80 hover:bg-white"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        // TODO: Implement save functionality
+                      }}
+                    >
                       <Heart className="h-4 w-4 text-gray-600" />
                     </Button>
                   </div>
