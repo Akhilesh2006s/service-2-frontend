@@ -5,8 +5,6 @@ import { Badge } from './ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { 
   Heart, 
-  MessageCircle, 
-  Share, 
   Bookmark, 
   MapPin, 
   Clock, 
@@ -68,7 +66,6 @@ interface LinkedInStylePostProps {
   };
   onApply?: (postId: string) => void;
   onSave?: (postId: string) => void;
-  onShare?: (postId: string) => void;
   showActions?: boolean;
 }
 
@@ -76,7 +73,6 @@ const LinkedInStylePost: React.FC<LinkedInStylePostProps> = ({
   post,
   onApply,
   onSave,
-  onShare,
   showActions = true
 }) => {
   const [isLiked, setIsLiked] = useState(false);
@@ -94,9 +90,6 @@ const LinkedInStylePost: React.FC<LinkedInStylePostProps> = ({
     onSave?.(post._id);
   };
 
-  const handleShare = () => {
-    onShare?.(post._id);
-  };
 
   const handleApply = () => {
     setShowApplicationModal(true);
@@ -262,23 +255,6 @@ const LinkedInStylePost: React.FC<LinkedInStylePostProps> = ({
                 >
                   <Heart className={`h-4 w-4 ${isLiked ? 'fill-current' : ''}`} />
                   <span className="text-sm">{likes}</span>
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  className="flex items-center space-x-2 text-gray-600 hover:text-blue-600"
-                >
-                  <MessageCircle className="h-4 w-4" />
-                  <span className="text-sm">Comment</span>
-                </Button>
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleShare}
-                  className="flex items-center space-x-2 text-gray-600 hover:text-green-600"
-                >
-                  <Share className="h-4 w-4" />
-                  <span className="text-sm">Share</span>
                 </Button>
               </div>
               <div className="flex items-center space-x-2">

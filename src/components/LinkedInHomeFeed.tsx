@@ -125,13 +125,6 @@ const LinkedInHomeFeed: React.FC<LinkedInHomeFeedProps> = ({
     // TODO: Implement save functionality
   };
 
-  const handleShare = (postId: string) => {
-    toast({
-      title: "Shared",
-      description: "Opportunity link copied to clipboard",
-    });
-    // TODO: Implement share functionality
-  };
 
   const clearFilters = () => {
     setFilters({
@@ -331,7 +324,6 @@ const LinkedInHomeFeed: React.FC<LinkedInHomeFeedProps> = ({
               key={opportunity._id}
               post={opportunity}
               onSave={handleSave}
-              onShare={handleShare}
               showActions={userRole === 'employee'}
             />
           ))

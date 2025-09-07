@@ -5,7 +5,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import Index from "./pages/Index";
-import LinkedInHome from "./pages/LinkedInHome";
+import SimpleHome from "./pages/SimpleHome";
 import Login from "./pages/Login";
 import OrganizationDashboard from "./pages/OrganizationDashboard";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
@@ -92,7 +92,7 @@ const App = () => (
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/" element={<LinkedInHome />} />
+            <Route path="/" element={<SimpleHome />} />
             <Route path="/landing" element={<Index />} />
             <Route 
               path="/login" 
