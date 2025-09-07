@@ -106,7 +106,7 @@ const NewHome: React.FC = () => {
   };
 
   const getCompensationDisplay = (opportunity: Opportunity) => {
-    if (opportunity.compensation?.amount) {
+    if (opportunity.compensation?.amount && typeof opportunity.compensation.amount === 'number') {
       return `$${opportunity.compensation.amount.toLocaleString()}/month`;
     }
     return 'Competitive';
@@ -148,13 +148,23 @@ const NewHome: React.FC = () => {
               >
                 Home
               </Button>
-              <Button 
-                variant="ghost" 
-                onClick={() => navigate('/dashboard')}
-                className="text-gray-700 hover:text-blue-600"
-              >
-                Dashboard
-              </Button>
+              {isAuthenticated ? (
+                <Button 
+                  variant="ghost" 
+                  onClick={() => navigate(user?.role === 'organization' ? '/organization-dashboard' : '/employee-dashboard')}
+                  className="text-gray-700 hover:text-blue-600"
+                >
+                  Dashboard
+                </Button>
+              ) : (
+                <Button 
+                  variant="ghost" 
+                  onClick={() => navigate('/login')}
+                  className="text-gray-700 hover:text-blue-600"
+                >
+                  Sign In
+                </Button>
+              )}
               {user?.role === 'organization' && (
                 <Button 
                   onClick={() => navigate('/organization-dashboard')}
@@ -172,9 +182,23 @@ const NewHome: React.FC = () => {
                 <Button variant="ghost" size="sm">
                   ☰
                 </Button>
-                <Button variant="ghost" size="sm">
-                  👤
-                </Button>
+                {isAuthenticated ? (
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => navigate(user?.role === 'organization' ? '/organization-dashboard' : '/employee-dashboard')}
+                  >
+                    👤
+                  </Button>
+                ) : (
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    onClick={() => navigate('/login')}
+                  >
+                    👤
+                  </Button>
+                )}
               </div>
             </div>
           </div>
@@ -190,6 +214,25 @@ const NewHome: React.FC = () => {
           <p className="text-lg text-gray-600 mb-8">
             Discover opportunities that match your skills and interests
           </p>
+          {!isAuthenticated && (
+            <div className="flex justify-center space-x-4">
+              <Button 
+                size="lg" 
+                onClick={() => navigate('/login')}
+                className="bg-blue-600 hover:bg-blue-700 text-white rounded-full px-8"
+              >
+                Get Started
+              </Button>
+              <Button 
+                variant="outline" 
+                size="lg" 
+                onClick={() => navigate('/login')}
+                className="border-2 border-gray-300 hover:border-blue-500 text-gray-700 hover:text-blue-600 rounded-full px-8"
+              >
+                Sign In
+              </Button>
+            </div>
+          )}
         </div>
       </div>
 
