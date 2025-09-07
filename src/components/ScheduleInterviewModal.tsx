@@ -78,12 +78,21 @@ const ScheduleInterviewModal: React.FC<ScheduleInterviewModalProps> = ({
       console.log('📤 Sending interview data:', interviewInfo);
       console.log('🌐 Using API endpoint: /organizations/applications/' + application._id + '/status');
 
-      // Update application status to 'interview-scheduled' and add interview details
+      // Update application status to 'interview' (backend doesn't support 'interview-scheduled' yet)
+      // Store interview data in the note field as a workaround
+      const interviewNote = `INTERVIEW SCHEDULED:
+Date: ${interviewData.date}
+Time: ${interviewData.time}
+Duration: ${interviewData.duration} minutes
+Type: ${interviewData.type}
+${interviewData.type === 'in-person' ? `Location: ${interviewData.location}` : `Meeting Link: ${interviewData.meetingLink}`}
+Interviewer: ${interviewData.interviewer} (${interviewData.interviewerEmail})
+Notes: ${interviewData.notes}`;
+
       const result = await apiService.updateApplicationStatus(
         application._id, 
-        'interview-scheduled', 
-        `Interview scheduled for ${interviewData.date} at ${interviewData.time}. ${interviewData.notes}`,
-        interviewInfo.interviewData
+        'interview', 
+        interviewNote
       );
       
       console.log('✅ Interview scheduling result:', result);

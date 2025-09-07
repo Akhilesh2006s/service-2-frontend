@@ -26,7 +26,7 @@ interface Interview {
       name: string;
     };
   };
-  interviewData: {
+  interviewData?: {
     date: string;
     time: string;
     datetime: string;
@@ -39,6 +39,11 @@ interface Interview {
     interviewerEmail: string;
     status: 'scheduled' | 'completed' | 'cancelled';
   };
+  notes?: Array<{
+    note: string;
+    addedBy: string;
+    addedAt: string;
+  }>;
   createdAt: string;
   updatedAt: string;
 }
@@ -52,6 +57,58 @@ const EmployeeInterviews: React.FC = () => {
   useEffect(() => {
     fetchInterviews();
   }, []);
+
+  // Parse interview data from notes field (workaround for backend limitations)
+  const parseInterviewFromNotes = (application: any) => {
+    if (application.interviewData) {
+      return application.interviewData;
+    }
+
+    // Look for interview note
+    const interviewNote = application.notes?.find((note: any) => 
+      note.note && note.note.includes('INTERVIEW SCHEDULED:')
+    );
+
+    if (!interviewNote) return null;
+
+    const noteText = interviewNote.note;
+    const lines = noteText.split('\n');
+    
+    const interviewData: any = {
+      status: 'scheduled',
+      scheduledAt: interviewNote.addedAt
+    };
+
+    lines.forEach(line => {
+      if (line.includes('Date:')) {
+        interviewData.date = line.split('Date:')[1]?.trim();
+      } else if (line.includes('Time:')) {
+        interviewData.time = line.split('Time:')[1]?.trim();
+      } else if (line.includes('Duration:')) {
+        const duration = line.split('Duration:')[1]?.trim();
+        interviewData.duration = parseInt(duration?.split(' ')[0] || '60');
+      } else if (line.includes('Type:')) {
+        interviewData.type = line.split('Type:')[1]?.trim();
+      } else if (line.includes('Location:')) {
+        interviewData.location = line.split('Location:')[1]?.trim();
+      } else if (line.includes('Meeting Link:')) {
+        interviewData.meetingLink = line.split('Meeting Link:')[1]?.trim();
+      } else if (line.includes('Interviewer:')) {
+        const interviewerLine = line.split('Interviewer:')[1]?.trim();
+        if (interviewerLine) {
+          const parts = interviewerLine.split(' (');
+          interviewData.interviewer = parts[0];
+          if (parts[1]) {
+            interviewData.interviewerEmail = parts[1].replace(')', '');
+          }
+        }
+      } else if (line.includes('Notes:')) {
+        interviewData.notes = line.split('Notes:')[1]?.trim();
+      }
+    });
+
+    return interviewData;
+  };
 
   const fetchInterviews = async () => {
     try {
@@ -84,12 +141,24 @@ const EmployeeInterviews: React.FC = () => {
         const interviewApplications = applications.filter((app: any) => {
           const hasInterviewStatus = app.status === 'interview-scheduled' || app.status === 'interview';
           const hasInterviewData = !!app.interviewData;
-          console.log(`🎯 App ${app._id}: status=${app.status}, hasData=${hasInterviewData}, matches=${hasInterviewStatus && hasInterviewData}`);
-          return hasInterviewStatus && hasInterviewData;
+          const hasInterviewNote = app.notes && app.notes.some((note: any) => 
+            note.note && note.note.includes('INTERVIEW SCHEDULED:')
+          );
+          console.log(`🎯 App ${app._id}: status=${app.status}, hasData=${hasInterviewData}, hasNote=${hasInterviewNote}, matches=${hasInterviewStatus && (hasInterviewData || hasInterviewNote)}`);
+          return hasInterviewStatus && (hasInterviewData || hasInterviewNote);
         });
         
-        console.log('🎯 Final Interview Applications:', interviewApplications.length, interviewApplications);
-        setInterviews(interviewApplications);
+        // Parse interview data for each application
+        const interviewsWithData = interviewApplications.map((app: any) => {
+          const interviewData = parseInterviewFromNotes(app);
+          return {
+            ...app,
+            interviewData
+          };
+        }).filter((app: any) => app.interviewData); // Only include apps with valid interview data
+
+        console.log('🎯 Final Interview Applications:', interviewsWithData.length, interviewsWithData);
+        setInterviews(interviewsWithData);
       } else {
         console.log('❌ API response status not success:', response);
         setInterviews([]);
