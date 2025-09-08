@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Search, Menu, User, Globe, LogOut, Settings } from "lucide-react";
+import { Search, Menu, User, LogOut, Settings } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "../contexts/AuthContext";
 import { useNavigate } from "react-router-dom";
@@ -74,10 +74,6 @@ const Header = () => {
                   </Button>
                 )}
                 
-                <Button variant="ghost" size="icon" className="p-2">
-                  <Globe className="h-4 w-4" />
-                </Button>
-
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <div className="flex items-center space-x-2 border border-border rounded-full py-2 px-4 hover:shadow-md transition-shadow cursor-pointer">
