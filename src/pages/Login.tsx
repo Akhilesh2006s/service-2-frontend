@@ -7,6 +7,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Loader2, Eye, EyeOff, Building2, User } from 'lucide-react';
+import Logo from '../components/Logo';
 
 const Login = () => {
   const { login, register, loading, error, clearError } = useAuth();
@@ -76,8 +77,8 @@ const Login = () => {
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-green-50 flex items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
-          <div className="mx-auto mb-4 w-12 h-12 bg-gradient-to-r from-blue-600 to-green-600 rounded-full flex items-center justify-center">
-            <span className="text-white font-bold text-xl">I</span>
+          <div className="mx-auto mb-4">
+            <Logo size="lg" className="mx-auto" />
           </div>
           <CardTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
             Welcome to Inkaranya
@@ -357,4 +358,5 @@ const Login = () => {
 };
 
 export default Login;
+
 

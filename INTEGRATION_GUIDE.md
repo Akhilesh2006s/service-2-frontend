@@ -148,3 +148,4 @@ Your Inkaranya platform is now fully integrated and ready for users! The backend
 
 The integration is complete and your platform is now a fully functional experiential learning marketplace! 🎊
 
+

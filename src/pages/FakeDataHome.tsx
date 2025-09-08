@@ -15,6 +15,7 @@ import {
   Heart,
   Bookmark
 } from 'lucide-react';
+import Logo from '../components/Logo';
 
 // Fake data
 const fakeOpportunities = [
@@ -139,7 +140,7 @@ const FakeDataHome = () => {
       <header className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <h1 className="text-2xl font-bold text-blue-600 cursor-pointer" onClick={() => navigate('/')}>Inkaranya</h1>
+            <Logo size="md" />
             <div className="flex items-center space-x-4">
               <Button variant="outline" onClick={() => navigate('/login')}>Sign In</Button>
               <Button onClick={() => navigate('/login')}>Get Started</Button>
@@ -281,7 +282,9 @@ const FakeDataHome = () => {
       {/* Footer */}
       <footer className="bg-gray-900 text-white py-12">
         <div className="container mx-auto px-6 text-center">
-          <h3 className="text-2xl font-bold mb-4">Inkaranya</h3>
+          <div className="flex justify-center mb-4">
+            <Logo size="lg" className="filter brightness-0 invert" />
+          </div>
           <p className="text-gray-400">
             Connecting talent with opportunities
           </p>

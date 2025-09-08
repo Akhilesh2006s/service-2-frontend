@@ -5,9 +5,10 @@ import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../components/ui/select';
 import { Badge } from '../components/ui/badge';
-import { Search, MapPin, Building2, Briefcase, Star, Heart, Filter, ArrowRight, Clock, Users, TrendingUp } from 'lucide-react';
+import { Search, MapPin, Building2, Briefcase, Star, Heart, Filter, ArrowRight, Clock, Users, TrendingUp, Plus } from 'lucide-react';
 import apiService from '../services/api';
 import { toast } from '../hooks/use-toast';
+import Logo from '../components/Logo';
 
 interface Opportunity {
   _id: string;
@@ -267,12 +268,7 @@ const NewHome: React.FC = () => {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center">
-              <h1 
-                className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent cursor-pointer hover:from-blue-700 hover:to-purple-700 transition-all duration-300"
-                onClick={() => navigate('/')}
-              >
-                Inkaranya
-              </h1>
+              <Logo size="md" />
             </div>
 
             {/* Navigation */}
