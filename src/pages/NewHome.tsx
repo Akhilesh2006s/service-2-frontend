@@ -361,7 +361,7 @@ const NewHome: React.FC = () => {
                 <span className="font-semibold">NEW:</span>
               </div>
               <span className="text-sm md:text-base">
-                Explore 70+ Must-Visit Places in Delhi NCR! Express your interest for organized group visits.
+                Explore 70+ Must-Visit Places in Delhi NCR for first-year students!
               </span>
             </div>
             <Button 
