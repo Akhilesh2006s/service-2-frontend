@@ -120,7 +120,10 @@ const EmployeeDashboard = () => {
                 Discover opportunities and track your applications
               </p>
             </div>
-            <Button className="flex items-center gap-2">
+            <Button 
+              className="flex items-center gap-2"
+              onClick={() => setActiveTab('opportunities')}
+            >
               <Search className="h-4 w-4" />
               Find Opportunities
             </Button>
