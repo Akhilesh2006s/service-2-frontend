@@ -268,7 +268,7 @@ const NewHome: React.FC = () => {
           <div className="flex items-center justify-between h-16">
             {/* Logo */}
             <div className="flex items-center">
-              <Logo size="md" />
+              <Logo size="md" showText={true} />
             </div>
 
             {/* Navigation */}

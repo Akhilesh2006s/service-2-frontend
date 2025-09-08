@@ -78,12 +78,9 @@ const Login = () => {
       <Card className="w-full max-w-md">
         <CardHeader className="text-center">
           <div className="mx-auto mb-4">
-            <Logo size="lg" className="mx-auto" />
+            <Logo size="xl" showText={true} className="mx-auto" />
           </div>
-          <CardTitle className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-green-600 bg-clip-text text-transparent">
-            Welcome to Inkaranya
-          </CardTitle>
-          <CardDescription>
+          <CardDescription className="text-lg">
             A Platform for Experiential Learning
           </CardDescription>
         </CardHeader>

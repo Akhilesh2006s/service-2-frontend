@@ -140,7 +140,7 @@ const FakeDataHome = () => {
       <header className="bg-white shadow-sm border-b">
         <div className="container mx-auto px-6 py-4">
           <div className="flex items-center justify-between">
-            <Logo size="md" />
+            <Logo size="md" showText={true} />
             <div className="flex items-center space-x-4">
               <Button variant="outline" onClick={() => navigate('/login')}>Sign In</Button>
               <Button onClick={() => navigate('/login')}>Get Started</Button>
@@ -283,7 +283,7 @@ const FakeDataHome = () => {
       <footer className="bg-gray-900 text-white py-12">
         <div className="container mx-auto px-6 text-center">
           <div className="flex justify-center mb-4">
-            <Logo size="lg" className="filter brightness-0 invert" />
+            <Logo size="lg" showText={true} className="filter brightness-0 invert" />
           </div>
           <p className="text-gray-400">
             Connecting talent with opportunities

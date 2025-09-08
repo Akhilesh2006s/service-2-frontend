@@ -37,7 +37,7 @@ const Header = () => {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
-            <Logo size="md" />
+            <Logo size="md" showText={true} />
           </div>
 
           {/* Navigation - Desktop */}
