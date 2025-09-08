@@ -13,6 +13,7 @@ import OrganizationDashboard from "./pages/OrganizationDashboard";
 import EmployeeDashboard from "./pages/EmployeeDashboard";
 import OrganizationProfile from "./pages/OrganizationProfile";
 import OpportunityDetail from "./pages/OpportunityDetail";
+import PlacesToVisit from "./pages/PlacesToVisit";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -178,6 +179,10 @@ const App = () => (
             <Route 
               path="/opportunity/:id" 
               element={<OpportunityDetail />}
+            />
+            <Route 
+              path="/places-to-visit" 
+              element={<PlacesToVisit />}
             />
             {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
             <Route path="*" element={<NotFound />} />

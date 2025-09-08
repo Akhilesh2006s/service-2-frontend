@@ -351,6 +351,31 @@ const NewHome: React.FC = () => {
         </div>
       </header>
 
+      {/* Announcement Bar */}
+      <div className="bg-gradient-to-r from-green-500 to-blue-600 text-white py-3">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex items-center gap-2">
+                <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+                <span className="font-semibold">NEW:</span>
+              </div>
+              <span className="text-sm md:text-base">
+                Explore 70+ Must-Visit Places in Delhi NCR! Express your interest for organized group visits.
+              </span>
+            </div>
+            <Button 
+              size="sm"
+              variant="secondary"
+              onClick={() => navigate('/places-to-visit')}
+              className="bg-white/20 hover:bg-white/30 text-white border-white/30 hover:border-white/50"
+            >
+              Explore Places
+            </Button>
+          </div>
+        </div>
+      </div>
+
       {/* Hero Section */}
       <div className="bg-white py-8">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
